@@ -1,0 +1,115 @@
+loadstring(game:HttpGet('https://raw.githubusercontent.com/ToddyTheNoobDud/Meepstuff/refs/heads/main/RakingNuts.lua'))() -- Create Teleport GUI
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local playerGui = player:WaitForChild("PlayerGui")
+ 
+-- Create ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = playerGui
+ScreenGui.Name = "TeleportGUI"
+ 
+-- Create the Frame
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 200, 0, 300)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -150) -- Centered on screen
+Frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+Frame.BorderSizePixel = 0
+Frame.Draggable = true
+Frame.Active = true
+Frame.Parent = ScreenGui
+ 
+-- Add the title label
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, 0, 0, 40) -- Spanning the top of the frame
+TitleLabel.Position = UDim2.new(0, 0, 0, 0)
+TitleLabel.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+TitleLabel.TextColor3 = Color3.new(1, 1, 1)
+TitleLabel.Text = "Voxel - Whispering Pines"
+TitleLabel.Font = Enum.Font.SourceSansBold
+TitleLabel.TextSize = 20
+TitleLabel.Parent = Frame
+ 
+-- Function for teleporting
+local function teleportTo(position)
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(position)
+    end
+end
+ 
+-- Predefined locations
+local locations = {
+    {"Tower 1", Vector3.new(192.24, 3.70, 177.92)},
+    {"Tower 2", Vector3.new(-208.03, 9.77, -308.67)},
+    {"Staff Cabin", Vector3.new(26.81, 4.28, -66.92)},
+    {"Small Shelter", Vector3.new(329.95, 4.37, -68.55)},
+    {"Mines", Vector3.new(-320.40, 3.60, 208.62)},
+}
+ 
+-- Create teleport buttons
+for i, location in ipairs(locations) do
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 180, 0, 40)
+    button.Position = UDim2.new(0, 10, 0, 50 + (i - 1) * 50) -- Adjusted to sit below the title
+    button.Text = location[1]
+    button.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Parent = Frame
+ 
+    -- Connect button to teleport function
+    button.MouseButton1Click:Connect(function()
+        teleportTo(location[2])
+    end)
+endlocal Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+
+local function applyPowers()
+    local char = player.Character or player.CharacterAdded:Wait()
+    local humanoid = char:WaitForChild("Humanoid")
+    local root = char:WaitForChild("HumanoidRootPart")
+
+    -- God Mode
+    humanoid.MaxHealth = math.huge
+    humanoid.Health = math.huge
+
+    -- Super Speed / Jump
+    humanoid.WalkSpeed = 30
+    humanoid.JumpPower = 20
+
+    -- Fall Damage: Pasif olarak kontrol eder
+    local lastY = root.Position.Y
+    spawn(function()
+        while true do
+            wait(0.1)
+            local currentY = root.Position.Y
+            local velocity = root.Velocity.Y
+            if velocity <= -70 and humanoid.FloorMaterial ~= Enum.Material.Air then
+                local damage = math.abs(velocity) * 0.3
+                humanoid:TakeDamage(damage)
+                wait(1)
+            end
+        end
+    end)
+
+    -- Punch Power (mouse click ile)
+    local mouse = player:GetMouse()
+    mouse.Button1Down:Connect(function()
+        local ray = Ray.new(root.Position, (mouse.Hit.p - root.Position).unit * 10)
+        local part, position = workspace:FindPartOnRay(ray, char)
+        if part and part.Parent:FindFirstChild("Humanoid") then
+            local target = part.Parent
+            target.Humanoid:TakeDamage(9999) -- One Punch!
+            if target:FindFirstChild("HumanoidRootPart") then
+                target.HumanoidRootPart.Velocity = (target.HumanoidRootPart.Position - root.Position).unit * 500
+            end
+        end
+    end)
+end
+
+-- Aktif Etmek için "F" tuşuna bas
+UIS.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.F then
+        applyPowers()
+        print("Saitama Güçleri Aktif!")
+    end
+end)
