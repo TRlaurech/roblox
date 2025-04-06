@@ -117,3 +117,5 @@ end)
 
 -- External script (if needed)
 loadstring(game:HttpGet('https://raw.githubusercontent.com/ToddyTheNoobDud/Meepstuff/refs/heads/main/RakingNuts.lua'))()
+
+-----PRESS F !!!!!!!!!!!!!!!!!!!!!!!!!!!
