@@ -1,2 +1,0 @@
-# roblox
-whispering pines script
