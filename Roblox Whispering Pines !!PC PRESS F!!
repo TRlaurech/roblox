@@ -1,14 +1,14 @@
--- Teleport GUI
+-- tp gui 1
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Create ScreenGui
+-- tp gui 2
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = playerGui
 ScreenGui.Name = "TeleportGUI"
 
--- Create the Frame
+-- tp çerçeve ayarı
 local Frame = Instance.new("Frame")
 Frame.Size = UDim2.new(0, 200, 0, 300)
 Frame.Position = UDim2.new(0.5, -100, 0.5, -150) -- Centered on screen
@@ -18,7 +18,7 @@ Frame.Draggable = true
 Frame.Active = true
 Frame.Parent = ScreenGui
 
--- Add the title label
+-- tp ayarı 1
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Size = UDim2.new(1, 0, 0, 40) -- Spanning the top of the frame
 TitleLabel.Position = UDim2.new(0, 0, 0, 0)
@@ -29,14 +29,14 @@ TitleLabel.Font = Enum.Font.SourceSansBold
 TitleLabel.TextSize = 20
 TitleLabel.Parent = Frame
 
--- Function for teleporting
+-- Işınlanma işlevi
 local function teleportTo(position)
     if character and character:FindFirstChild("HumanoidRootPart") then
         character.HumanoidRootPart.CFrame = CFrame.new(position)
     end
 end
 
--- Predefined locations
+-- Önceden tanımlanmış konumlar
 local locations = {
     {"Tower 1", Vector3.new(192.24, 3.70, 177.92)},
     {"Tower 2", Vector3.new(-208.03, 9.77, -308.67)},
@@ -45,7 +45,7 @@ local locations = {
     {"Mines", Vector3.new(-320.40, 3.60, 208.62)},
 }
 
--- Create teleport buttons
+-- tp ayarı 2
 for i, location in ipairs(locations) do
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(0, 180, 0, 40)
@@ -55,13 +55,13 @@ for i, location in ipairs(locations) do
     button.TextColor3 = Color3.new(1, 1, 1)
     button.Parent = Frame
 
-    -- Connect button to teleport function
+    -- tp ışınlayıcı ayarı
     button.MouseButton1Click:Connect(function()
         teleportTo(location[2])
     end)
 end
 
--- Powers application
+-- güç ayarı
 local UIS = game:GetService("UserInputService")
 
 local function applyPowers()
@@ -69,11 +69,11 @@ local function applyPowers()
     local humanoid = char:WaitForChild("Humanoid")
     local root = char:WaitForChild("HumanoidRootPart")
 
-    -- God Mode
+    -- ölümsüzlük (NOT:canınız daha az gider)
     humanoid.MaxHealth = math.huge
     humanoid.Health = math.huge
 
-    -- Super Speed / Jump
+    -- Super Speed / Jump  (NOT:ayar yapabilirsiniz roblox speed sınırı 100 Kick yeme şansı vardır)
     humanoid.WalkSpeed = 30
     humanoid.JumpPower = 20
 
@@ -92,7 +92,7 @@ local function applyPowers()
         end
     end)
 
-    -- Punch Power (mouse click ile)
+    -- Yumruk  (şuanlık bazı oyunlarda)
     local mouse = player:GetMouse()
     mouse.Button1Down:Connect(function()
         local ray = Ray.new(root.Position, (mouse.Hit.p - root.Position).unit * 10)
@@ -115,7 +115,8 @@ UIS.InputBegan:Connect(function(input)
     end
 end)
 
--- External script (if needed)
+-- Harici komut dosyası (gerekirse)
 loadstring(game:HttpGet('https://raw.githubusercontent.com/ToddyTheNoobDud/Meepstuff/refs/heads/main/RakingNuts.lua'))()
 
 -----PRESS F !!!!!!!!!!!!!!!!!!!!!!!!!!!
+---creator:laurech
